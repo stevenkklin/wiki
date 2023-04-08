@@ -2,9 +2,12 @@ package com.linchao.backend.mapper;
 
 import com.linchao.backend.pojo.Ebook;
 import com.linchao.backend.pojo.EbookExample;
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface EbookMapper {
     long countByExample(EbookExample example);
 
