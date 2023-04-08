@@ -6,7 +6,7 @@ import com.linchao.backend.pojo.EbookExample;
 import com.linchao.backend.req.EbookReq;
 import com.linchao.backend.resp.EbookResp;
 import com.linchao.backend.service.EbookService;
-import org.springframework.beans.BeanUtils;
+import com.linchao.backend.util.CopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +31,18 @@ public class EbookServiceImpl implements EbookService {
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         List<EbookResp> respList = new ArrayList<>();
-        for (Ebook ebook : ebookList) {
-            EbookResp ebookResp = new EbookResp();
-            BeanUtils.copyProperties(ebook, ebookResp);
-            respList.add(ebookResp);
-        }
+//        for (Ebook ebook : ebookList) {
+////            EbookResp ebookResp = new EbookResp();
+////            BeanUtils.copyProperties(ebook, ebookResp);
+            //  对象复制
+//            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
+//
+//            respList.add(ebookResp);
+//        }
 
-        return respList;
+        //  列表复制
+        List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
+
+        return list;
     }
 }
