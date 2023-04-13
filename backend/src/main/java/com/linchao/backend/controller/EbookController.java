@@ -13,19 +13,19 @@ import java.util.List;
 
 /**
  * @author Steven
- * @create 2023-04-08-13:35
+ * @create 2023-04-13-14:23
  */
 @RestController
 @RequestMapping("/ebook")
 public class EbookController {
 
     @Autowired
-    private EbookService ebookService;
+    EbookService ebookService;
 
     @GetMapping("/list")
-    private CommonResp list(EbookReq req) {
+    public CommonResp list(EbookReq req) {
         CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list =  ebookService.list(req);
+        List<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }

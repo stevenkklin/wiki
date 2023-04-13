@@ -1,4 +1,4 @@
-package com.linchao.backend.config;
+package com.linchao.backend;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;

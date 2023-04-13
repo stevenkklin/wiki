@@ -104,7 +104,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.linchao.backend.config.BackendApplication</mainClass>
+                    <mainClass>com.linchao.backend.BackendApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
