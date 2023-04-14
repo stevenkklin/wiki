@@ -68,10 +68,11 @@
       </a-list>
     </a-layout-content>
   </a-layout>
+
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref, toRef} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 
 
@@ -93,20 +94,21 @@ export default defineComponent({
 
     console.log("setup");
     const ebooks = ref();
-    const ebooks1 = reactive({books: []});
 
     onMounted(() => {
-      console.log("onMounted22222");
-      axios.get("/ebook/list").then((res) => {
+      axios.get("/ebook/list", {
+        params: {
+          page: 1,
+          size: 1000,
+        }
+      }).then((res) => {
         const data = res.data;
-        ebooks.value = data.content;
-        ebooks1.books = data.content;
+        ebooks.value = data.content.list;
       });
     })
 
     return {
       ebooks,
-      ebooks2: toRef(ebooks1, "books"),
       pagination,
       actions,
     }

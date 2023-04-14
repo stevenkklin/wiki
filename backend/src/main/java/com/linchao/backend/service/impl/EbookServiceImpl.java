@@ -39,7 +39,7 @@ public class EbookServiceImpl implements EbookService {
             criteria.andNameLike("%" + req.getName() + "%");
         }
 
-        PageHelper.startPage(req.getPage(),req.getSize());
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -50,7 +50,7 @@ public class EbookServiceImpl implements EbookService {
 //        for (Ebook ebook : ebookList) {
 ////            EbookResp ebookResp = new EbookResp();
 ////            BeanUtils.copyProperties(ebook, ebookResp);
-            //  对象复制
+        //  对象复制
 //            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
 //
 //            respList.add(ebookResp);
