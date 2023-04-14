@@ -8,6 +8,7 @@ import com.linchao.backend.pojo.Ebook;
 import com.linchao.backend.pojo.EbookExample;
 import com.linchao.backend.req.EbookReq;
 import com.linchao.backend.resp.EbookResp;
+import com.linchao.backend.resp.PageResp;
 import com.linchao.backend.service.EbookService;
 import com.linchao.backend.util.CopyUtil;
 import org.slf4j.Logger;
@@ -31,14 +32,14 @@ public class EbookServiceImpl implements EbookService {
     private EbookMapper ebookMapper;
 
     @Override
-    public List<EbookResp> list(EbookReq req) {
+    public PageResp<EbookResp> list(EbookReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
 
-        PageHelper.startPage(2,2);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -55,9 +56,12 @@ public class EbookServiceImpl implements EbookService {
 //            respList.add(ebookResp);
 //        }
 
+        PageResp<EbookResp> pageResp = new PageResp();
+
         //  列表复制
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-
-        return list;
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+        return pageResp;
     }
 }

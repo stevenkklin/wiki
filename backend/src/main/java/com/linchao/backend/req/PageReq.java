@@ -5,10 +5,9 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class EbookReq extends PageReq{
-    private Long id;
+public class PageReq {
+    private int page;
 
-    private String name;
-
+    private int size;
 
 }
