@@ -6,8 +6,9 @@ import com.linchao.backend.BackendApplication;
 import com.linchao.backend.mapper.EbookMapper;
 import com.linchao.backend.pojo.Ebook;
 import com.linchao.backend.pojo.EbookExample;
-import com.linchao.backend.req.EbookReq;
-import com.linchao.backend.resp.EbookResp;
+import com.linchao.backend.req.EbookQueryReq;
+import com.linchao.backend.req.EbookSaveReq;
+import com.linchao.backend.resp.EbookQueryResp;
 import com.linchao.backend.resp.PageResp;
 import com.linchao.backend.service.EbookService;
 import com.linchao.backend.util.CopyUtil;
@@ -32,7 +33,7 @@ public class EbookServiceImpl implements EbookService {
     private EbookMapper ebookMapper;
 
     @Override
-    public PageResp<EbookResp> list(EbookReq req) {
+    public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
@@ -46,22 +47,34 @@ public class EbookServiceImpl implements EbookService {
         LOG.info("总行数: {}", pageInfo.getTotal());
         LOG.info("总页数: {}", pageInfo.getPages());
 
-//        List<EbookResp> respList = new ArrayList<>();
+//        List<EbookQueryResp> respList = new ArrayList<>();
 //        for (Ebook ebook : ebookList) {
-////            EbookResp ebookResp = new EbookResp();
+////            EbookQueryResp ebookResp = new EbookQueryResp();
 ////            BeanUtils.copyProperties(ebook, ebookResp);
         //  对象复制
-//            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
+//            EbookQueryResp ebookResp = CopyUtil.copy(ebook, EbookQueryResp.class);
 //
 //            respList.add(ebookResp);
 //        }
 
-        PageResp<EbookResp> pageResp = new PageResp();
+        PageResp<EbookQueryResp> pageResp = new PageResp();
 
         //  列表复制
-        List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
         return pageResp;
+    }
+
+    @Override
+    public void save(EbookSaveReq req) {
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        if (ObjectUtils.isEmpty(req.getId())) {
+            // 新增
+            ebookMapper.insert(ebook);
+        } else {
+            // 更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }

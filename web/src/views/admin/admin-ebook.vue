@@ -65,7 +65,7 @@ import axios from 'axios';
 
 export default defineComponent({
   name: 'AdminEbook',
-  setup() {
+  setup: function () {
     const ebooks = ref();
     const pagination = ref({
       current: 1,
@@ -86,11 +86,11 @@ export default defineComponent({
       },
       {
         title: '分类1',
-        slots: {customRender: 'category1Id'}
+        dataIndex: 'category1Id'
       },
       {
         title: '分类2',
-        slots: {customRender: 'category2Id'}
+        dataIndex: 'category2Id'
       },
       {
         title: '文档数',
@@ -145,16 +145,25 @@ export default defineComponent({
     };
 
     // 表单
-
     const ebook = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout(() => {
-        modalVisible.value = false;
-        modalLoading.value = false;
-      }, 2000);
+      axios.post("/ebook/save", ebook.value).then((response) => {
+        const data = response.data; // data = commonResp
+        if (data.success) {
+          modalVisible.value = false;
+          modalLoading.value = false;
+
+          // 重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize
+          });
+
+        }
+      });
     }
 
     /**

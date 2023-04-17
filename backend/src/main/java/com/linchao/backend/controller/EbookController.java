@@ -1,14 +1,13 @@
 package com.linchao.backend.controller;
 
-import com.linchao.backend.req.EbookReq;
+import com.linchao.backend.req.EbookQueryReq;
+import com.linchao.backend.req.EbookSaveReq;
 import com.linchao.backend.resp.CommonResp;
-import com.linchao.backend.resp.EbookResp;
+import com.linchao.backend.resp.EbookQueryResp;
 import com.linchao.backend.resp.PageResp;
 import com.linchao.backend.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Steven
@@ -22,10 +21,20 @@ public class EbookController {
     EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookReq req) {
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
-        PageResp<EbookResp> list = ebookService.list(req);
+    public CommonResp list(EbookQueryReq req) {
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
+
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req) {
+        CommonResp resp = new CommonResp();
+        ebookService.save(req);
+        return resp;
+    }
 }
+
+
+
