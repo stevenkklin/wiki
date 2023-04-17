@@ -12,6 +12,7 @@ import com.linchao.backend.resp.EbookQueryResp;
 import com.linchao.backend.resp.PageResp;
 import com.linchao.backend.service.EbookService;
 import com.linchao.backend.util.CopyUtil;
+import com.linchao.backend.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class EbookServiceImpl implements EbookService {
 
     @Autowired
     private EbookMapper ebookMapper;
+
+    @Autowired
+    private SnowFlake snowFlake;
 
     @Override
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
@@ -71,6 +75,7 @@ public class EbookServiceImpl implements EbookService {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         } else {
             // 更新
