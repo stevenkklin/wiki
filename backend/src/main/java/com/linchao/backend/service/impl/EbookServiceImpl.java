@@ -67,6 +67,8 @@ public class EbookServiceImpl implements EbookService {
         List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
+        System.out.println("pageResp" + pageResp);
+
         return pageResp;
     }
 
@@ -81,5 +83,10 @@ public class EbookServiceImpl implements EbookService {
             // 更新
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }

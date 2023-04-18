@@ -24,7 +24,9 @@ public class EbookController {
     public CommonResp list(EbookQueryReq req) {
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> list = ebookService.list(req);
+        System.out.println("controller:pageResp" + list);
         resp.setContent(list);
+        System.out.println("controller:commonResp" + resp);
         return resp;
     }
 
@@ -32,6 +34,13 @@ public class EbookController {
     public CommonResp save(@RequestBody EbookSaveReq req) {
         CommonResp resp = new CommonResp();
         ebookService.save(req);
+        return resp;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id) {
+        CommonResp resp = new CommonResp();
+        ebookService.delete(id);
         return resp;
     }
 }
