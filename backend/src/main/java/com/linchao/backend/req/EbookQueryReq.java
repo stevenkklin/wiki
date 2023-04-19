@@ -1,5 +1,7 @@
 package com.linchao.backend.req;
 
+import javax.validation.constraints.NotNull;
+
 public class EbookQueryReq extends PageReq {
     private Long id;
 

@@ -4,9 +4,31 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
+        <a-form
+            layout="inline"
+            :model="param"
+        >
+          <a-form-item>
+            <a-input v-model:value="param.name" placeholder="名称">
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button
+                type="primary"
+                @click="handleQuery({
+                  page: 1,
+                  size: pagination.pageSize
+                })"
+            >
+              查询
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="add()">
+              新增
+            </a-button>
+          </a-form-item>
+        </a-form>
       </p>
       <a-table
           :columns="columns"
@@ -45,7 +67,10 @@
       title="电子书表单"
       v-model:visible="modalVisible"
       :confirm-loading="modalLoading"
+      ok-text="确定"
+      cancel-text="取消"
       @ok="handleModalOk"
+      @cancel="handleModalCancel"
   >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="封面">
@@ -74,11 +99,13 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
-import { message } from "ant-design-vue";
+import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'AdminEbook',
   setup: function () {
+    const param = ref();
+    param.value = {};
     const ebooks = ref();
     const pagination = ref({
       current: 1,
@@ -133,6 +160,7 @@ export default defineComponent({
         params: {
           page: params.page,
           size: params.size,
+          name: param.value.name,
         }
       }).then((response) => {
         loading.value = false;
@@ -174,10 +202,10 @@ export default defineComponent({
     const handleModalOk = () => {
       modalLoading.value = true;
       axios.post("/ebook/save", ebook.value).then((response) => {
+        modalLoading.value = false;
         const data = response.data; // data = commonResp
         if (data.success) {
           modalVisible.value = false;
-          modalLoading.value = false;
 
           // 重新加载列表
           handleQuery({
@@ -185,7 +213,20 @@ export default defineComponent({
             size: pagination.value.pageSize
           });
 
+        } else {
+          message.error(data.message);
         }
+      });
+    }
+
+
+    const handleModalCancel = () => {
+      modalVisible.value = false;
+
+      // 重新加载列表
+      handleQuery({
+        page: pagination.value.current,
+        size: pagination.value.pageSize
       });
     }
 
@@ -206,7 +247,6 @@ export default defineComponent({
       axios.delete("/ebook/delete/" + id).then((response) => {
         const data = response.data; // data = commonResp
         if (data.success) {
-
           // 重新加载列表
           handleQuery({
             page: pagination.value.current,
@@ -234,6 +274,7 @@ export default defineComponent({
     return {
       ebooks,
       pagination,
+      param,
       columns,
       loading,
       handleTableChange,
@@ -246,7 +287,8 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
-      ebook
+      ebook,
+      handleModalCancel
     }
   }
 });
