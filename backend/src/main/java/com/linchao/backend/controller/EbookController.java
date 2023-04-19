@@ -9,6 +9,8 @@ import com.linchao.backend.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author Steven
  * @create 2023-04-13-14:23
@@ -21,12 +23,10 @@ public class EbookController {
     EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookQueryReq req) {
+    public CommonResp list(@Valid EbookQueryReq req) {
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> list = ebookService.list(req);
-        System.out.println("controller:pageResp" + list);
         resp.setContent(list);
-        System.out.println("controller:commonResp" + resp);
         return resp;
     }
 

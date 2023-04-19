@@ -67,7 +67,6 @@ public class EbookServiceImpl implements EbookService {
         List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
-        System.out.println("pageResp" + pageResp);
 
         return pageResp;
     }
